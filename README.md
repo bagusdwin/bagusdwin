@@ -2,7 +2,7 @@
 - 👀 I’m interested in IT Computer and Networking
 - 🌱 I’m currently learning Networking and security 
 - 💞️ I’m looking to collaborate develop on networking and computing
-- 📫 you can email me at bagus.dwi.n.i@gmail.com
+- 📫 you can email me at bagus.dwi.n.i@gmail.com or youcan visit my channel https://www.youtube.com/@Bagus_dni
 
 <!---
 bagusdwin/bagusdwin is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
