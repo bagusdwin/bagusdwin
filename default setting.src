@@ -12,3 +12,8 @@
 
 #create NAT for private client ether-ISP (ether1) connect to internet (ISP),
 /ip firewall nat add chain=srcnat out-interface=ether-ISP action=masquerade
+
+#Setting DNS over HTTPS using Adguard DNS provider https://dns.adguard-dns.com/dns-query 
+/ip dns set use-doh-server=https://dns.adguard-dns.com/dns-query allow-remote-requests=yes
+/ip dns static add name=adguard1 address=94.140.14.14
+/ip dns static add name=adguard2 address=94.140.15.15
