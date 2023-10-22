@@ -11,7 +11,8 @@
 /certificate add name=SERVER common-name=SERVER key-usage=digital-signature,key-encipherment,tls-server
 /certificate add name=CLIENT common-name=CLIENT key-usage=tls-client
 
-#Proses Sign Certificate please add one by one until "Done" message in terminal / console
+#Proses Sign Certificate please add one by one until "Done" message in terminal / console and host IP were IP public dedicated from ISP
+#But if you don't have one you can use IP in your internet modem but you must set port forwarding 1194 on your modem for Open-VPN passtrought.
 /certificate sign CA_CER ca-crl-host=192.168.122.146 duration=60
 /certificate sign SERVER ca=CA_CER duration=60
 /certificate sign CLIENT ca=CA_CER duration=60
