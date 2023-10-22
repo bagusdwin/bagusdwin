@@ -1,0 +1,40 @@
+#create interface for OPVN
+/interface bridge add name=opvn
+/interface bridge port add interface=ether4 bridge=opvn
+/ip address add address=192.168.31.254/23 network=192.168.30.0 interface=opvn
+/ip pool add name=ovpn ranges=192.168.30.3-192.168.31.253
+/ip dhcp-server set all500 interface=opvn 
+
+
+#Create Certificate SA, CLIENT, SERVER
+/certificate add name=CA_CER common-name=CA key-usage=key-cert-sign,crl-sign
+/certificate add name=SERVER common-name=SERVER key-usage=digital-signature,key-encipherment,tls-server
+/certificate add name=CLIENT common-name=CLIENT key-usage=tls-client
+
+#Proses Sign Certificate please add one by one until "Done" message in terminal / console
+/certificate sign CA_CER ca-crl-host=192.168.122.146 duration=60
+/certificate sign SERVER ca=CA_CER duration=60
+/certificate sign CLIENT ca=CA_CER duration=60
+
+
+#enable OpenVPN server
+/interface ovpn-server server set enabled=yes certificate=SERVER mode=ip netmask=23 auth=sha1 require-client-certificate=yes cipher=aes256-gcm,aes256-cbc
+#create profile for client
+/ppp profile add name=opvn local-address=192.168.31.254 remote-address=ovpn bridge=opvn
+#create user secret to connect
+/ppp secret add name=clientopvn password=12345678 profile=opvn
+
+#Export Certificate to client for connect (this file must be in mikrotik client) by copy and paste to mikrotik client 
+/certificate export-certificate CLIENT file-name=CLIENT export-passphrase=12345678
+/certificate export-certificate CA_CER file-name=CA_CLIENT
+
+
+#----------------------------Setting OVPN-CLIENT on Mikrotik Client---------------------------
+#1. import certificate to client
+/certificate import file-name=CLIENT.crt
+/certificate import file-name=CLIENT.key passphrase=12345678
+/certificate import file-name=CA_CLIENT.crt
+#2. create ovpn-client on mikrotik client 
+/interface ovpn-client add name=ovpn_to_HO connect-to=192.168.122.146 user=clientovpn password=12345678 certificate=CLIENT.crt_0 auth=sha1 cipher=aes256-cbc
+#3. create static route to akses server/PC
+/ip route add dst-address=192.168.20.0/23 gateway=ovpn_to_HO
