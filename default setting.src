@@ -1,0 +1,14 @@
+##############################
+#     Default Setting for    #
+#   Mikrotik connect to ISP  #
+##############################
+
+
+#rename ether1 -> ether-ISP (this for ISP coming from ether1)
+/interface ethernet set ether1 name=ether-ISP 
+
+#setting DHCP client for ip address ether1 (ehther-ISP) for internet Access
+/ip dhcp-client add interface=ether-ISP
+
+#create NAT for private client ether-ISP (ether1) connect to internet (ISP),
+/ip firewall nat add chain=srcnat out-interface=ether-ISP action=masquerade
